@@ -1,0 +1,838 @@
+Transcript
+Therefore, in the GameBoard component,
+
+we can get rid of this activePlayerSymbol prop here
+
+and we'll use the onSelectSquare prop here
+
+as a value for the onClick prop on the button.
+
+So we're no longer going to manage our game state
+
+in this component.
+
+Instead, we're going to lift it up.
+
+Therefore, of course, we'll need to fix this gameBoard here,
+
+which we're trying to map into a grid.
+
+But we'll do this in a second.
+
+For the moment, I'll leave this component
+
+as it is and get rid of this useState import
+
+and switch back to the App component.
+
+Here it's still handleSelectSquare that's executed with help
+
+of the onSelectSquare prop, which we're still passing
+
+to GameBoard when a button is clicked in that gameBoard.
+
+So that's still happens, but now here
+
+in handleSelectSquare, we wanna update our turns,
+
+using this functional approach here
+
+because the new turns array will depend
+
+on the old turns array.
+
+And in here, I simply wanna add a new entry
+
+to this array of turns that we took in this game.
+
+For this, we can create an updatedTurns constant
+
+where we copy the existing turns
+
+because we should update this
+
+in an immutable way as you learned.
+
+And now I wanna insert the new turn.
+
+So the information about which player clicked which button
+
+in front of the old turns so that the first item
+
+in this array is always the latest turn.
+
+For this here, we can add a new thing in this array.
+
+And now the only question is how should the information
+
+about a single turn in our game look like?
+
+And of course, there will be different ways
+
+of implementing this
+
+but I'd say it makes sense to store an object here
+
+so that our gameTurns state will eventually be an array full
+
+of objects and we want to know which player clicked
+
+on which square and the square can be identified
+
+by row and column index.
+
+So therefore here in handleSelectSquare,
+
+I need to know which row and which column was clicked
+
+or which rowIndex and column index was selected in the end.
+
+So that here in this object which we're adding
+
+to this updatedTurns array, we can describe our square
+
+with a nested object maybe where we set row equal
+
+to rowIndex and col equal to colIndex like this.
+
+So that's the new object we're adding to this turns array.
+
+Now, of course, we also need to know
+
+which player clicked that square
+
+and therefore, we can add a player property
+
+to this turn object.
+
+And here we can use activePlayer to store the symbol
+
+of the player that's currently active.
+
+Though doing that is not optimal
+
+because when using activePlayer here,
+
+we're technically merging two different states
+
+and we're using this function form
+
+for updating the gameTurns state
+
+for the reasons I mentioned earlier to make sure
+
+that when the schedule state update is performed,
+
+we are definitely working with the latest state
+
+but we don't have that guarantee
+
+for activePlayer because that's from a different state.
+
+Therefore, a better way of deriving the symbol
+
+of the currently activePlayer is to add a new variable here
+
+in this function that we're passing
+
+to the state updating function
+
+that could be named currentPlayer
+
+and by default, that's maybe X let's say.
+
+But I then wanna add a if statement
+
+and check if in our previous turns array
+
+if the first element in there,
+
+which will always be the latest turn as you know,
+
+if there the player is equal to X.
+
+So if the latest stored turn in our existing turns state,
+
+if that turn was performed by the player with the symbol X.
+
+And if that's the case, I instead wanna set currentPlayer
+
+to O because we then know that now it was the player
+
+with the symbol O that performed this turn
+
+because the latest turn before that was performed
+
+by the player with the symbol X.
+
+Now, of course, there might be no latest turn stored.
+
+For example, initially it's an empty array here
+
+and therefore, we can add another condition here and check
+
+if previous Turns.length is greater than zero.
+
+And then the latest turn was by this player.
+
+This way we only take a look at this latest turn
+
+if we have at least one turn
+
+and now we can use this currentPlayer information,
+
+which in the end is derived
+
+from our turns state to set the symbol of the player
+
+who was responsible for this turn.
+
+And now with all that done,
+
+we finally got this updated array here
+
+and we can return updatedTurns here
+
+as a new value for the gameTurns state
+
+because that's in the end
+
+what this state updating function here is all about.
+
+And it is a rather long state updating function.
+
+But this is absolutely something you'll see
+
+in React projects and it is a state updating function
+
+that makes sure that we update state in an immutable way
+
+and that we're not merging different states.
+
+And with that, we're now one step closer
+
+to using this gameTurns state for both the log
+
+Transcript
+So now that we got this game turns state
+
+which we are updating here,
+
+let's use this state to derive the gameboard
+
+from that array of turns.
+
+And for that here on the Gameboard component,
+
+we could pass a new turns prop to it.
+
+Name of course is up to you.
+
+And pass our game turns array
+
+as a value for this prop to Gameboard.
+
+And now in the Gameboard component,
+
+we can and should expect this turns array here.
+
+This turns prop, which will be that array of turns data.
+
+And now we need to add some logic here
+
+to this gameboard component function to derive our gameboard
+
+which still should be such an array full of arrays.
+
+So such a multi-dimensional array from this turns array.
+
+So we need to transform this turns array into such an array.
+
+And this sounds more complex than it is actually
+
+because we can start quite simple.
+
+We can add a variable here called Gameboard
+
+because we'll need that variable anyways.
+
+We are looking for it down here after all.
+
+And this Gameboard variable
+
+initially is simply our initial gameboard
+
+because that initial structure does not change.
+
+But then we wanna overwrite this variable
+
+with data derived from our turns, if we have turns.
+
+On the other hand, if turns is an MTRA,
+
+we of course wanna leave the game board as it is.
+
+Well for that to achieve this,
+
+we can simply add a for loop here
+
+where we loop through our turns
+
+with a for of loop like this for turns of turns.
+
+And if turns is an empty array
+
+this loop simply won't execute without us doing anything.
+
+That's simply how JavaScript behaves.
+
+And in that loop we wanna extract the information
+
+about the turn that occurred
+
+from that object that we're storing in this turns array.
+
+Every turn in that turns array
+
+will be an object of this shape.
+
+So an object that has a square property
+
+which then holds some nested object as a value
+
+and a player property which holds the symbol
+
+of the active player as a value.
+
+So here in GameBoard, we can now destructure our turn
+
+to pull these two properties, square and player,
+
+so square and player,
+
+these two properties to pull them out of the turn.
+
+We're currently looking at in this iteration
+
+of this loop, simply with this syntax here.
+
+Now a square as just mentioned
+
+is then such a nested object
+
+where we have a row and a col property.
+
+So we can pull this information out of this object as well.
+
+So here we got row and col from square.
+
+So we are performing object destructuring twice here.
+
+But with that we then got the player symbol
+
+and the row and column that was selected by that player.
+
+And therefore now of course we can go to our game board here
+
+and update the row and column with the player symbol.
+
+And that's all.
+
+We don't need to manage any state here.
+
+Instead what we're doing here is called deriving state.
+
+We are producing some derived state, some computed value
+
+you could say, Gameboard is a computed value
+
+that is derived from some state.
+
+In this case, from the game turns state
+
+that is managed in the app component.
+
+We are deriving the gameboard from that state.
+
+And this is how you should think and work in React.
+
+You should manage as little state as needed
+
+and try to derive as much information
+
+and as many values as possible from that state.
+
+And so with that, if we save everything here,
+
+if we reload our app here
+
+and we click a button, we see nothing.
+
+The game board disappears.
+
+And if we open the developer tools, we'll see an error here,
+
+cannot set properties of undefined.
+
+It occurs in the game board in line 14 as it seems.
+
+So this line here is failing, but why is it failing?
+
+Well, let's take a step back.
+
+We're deriving our game board based on the game turns.
+
+So let's take a look at those game turns.
+
+The game turns state is updated here
+
+and there we are storing information
+
+about the selected row with row index and call index.
+
+Which is data we're getting here
+
+as input to the handle select square function.
+
+But where is this handle select square function called?
+
+Well it's passed as a value
+
+through the on select square prop to Gameboard.
+
+And there this prop is in the end
+
+set as a value on On Click.
+
+But on click does not give us this row and call index data.
+
+And that's the problem here.
+
+To make sure that we get this information about which button
+
+in which row and which column was clicked,
+
+we should again use this approach here
+
+where we create an anonymous function that we pass
+
+to on click so that we got full control
+
+over how On Select Square will be executed.
+
+So how handle select square in the end will be executed.
+
+And here we can now pass our row index
+
+and our col index as arguments to this function
+
+and therefore in the end to this function
+
+since that's the value for this on select square prop.
+
+And with that we're making sure
+
+that this data arrives here and is stored here.
+
+And with that, if we now reload,
+
+we can click these buttons and now the game board updates
+
+we can still click the same button multiple times
+
+but we'll fix this soon.
+
+But now we're updating this game state
+
+based on this game turns state
+
+by having this computed value here,
+
+this derived state in the game board component.
+
+And now we can of course also use this game turn state
+
+to output it in our log.
+
+And that's definitely a nice practice for you
+
+to pass this stage to the log and output it as a list there.
+
+We will do it together in the next lecture.
+
+Transcript
+So, did you succeed?
+
+Let's implement this together now.
+
+And for this, I'll start in the Log component.
+
+There, we will definitely need some props
+
+to get those gameTurns from inside the App component
+
+into this Log component.
+
+So here, we could expect to get a turns prop.
+
+And then, in here, I, in the end,
+
+want to map this turns prop to a list of list items
+
+in this ordered list.
+
+So therefore, here, I'll get my turn data.
+
+And this turn data will be mapped to a list item,
+
+where I want to say which player selected which field
+
+with the coordinates of that field.
+
+So the row and columnIndex.
+
+Now, both pieces of data are stored in this turn here.
+
+Because every turn, as you saw before,
+
+has this square and this player information.
+
+The player information is just the symbol,
+
+but that's good enough for the Log here.
+
+So therefore, here, we can say turn.player,
+
+which is the symbol.
+
+Selected.
+
+And then, here,
+
+I want to output turn.square.row.
+
+So this rowIndex number.
+
+And of course, also the column.
+
+Maybe separated by a comma,
+
+which is no special JavaScript character here,
+
+but simply a comma that will be output on the screen.
+
+And then, here, we can say turn.square.col.
+
+And of course, we should add a key here
+
+because you should always do that
+
+when outputting a dynamic list.
+
+And the key here could be the combination of row and column
+
+because that will be unique for every turn
+
+because a given row-column combination
+
+can only be selected once.
+
+I guess, at the moment,
+
+you can click the same field multiple times,
+
+but that will change soon.
+
+So this row-column combination can be used
+
+to uniquely identify an entry in our log.
+
+So therefore, here, I'll create a string with backticks here
+
+to use JavaScript's template literal syntax.
+
+So this is not a single quote but a backtick.
+
+And this template literal syntax
+
+can be used in JavaScript to create a string
+
+where you can easily inject values into that string
+
+with this syntax.
+
+And that's now JavaScript syntax, not React.
+
+Dollar sign, opening and closing curly brace
+
+can be used in conjunction with those backticks
+
+to dynamically construct a string.
+
+And the first value I want to inject into this string
+
+is turn.square.row.
+
+The second value, thereafter,
+
+is turn.square.col.
+
+So that overall, this is a string
+
+that will simply be the combination of row and columnIndex,
+
+created with this template literal syntax
+
+provided by JavaScript.
+
+And attached, you'll find a link to learn more
+
+about this syntax in case you never heard about it.
+
+And then here's the actual log message,
+
+which I want to show.
+
+And with that, we just need to make sure
+
+that this turns prop is set here.
+
+So in the App component, on the Log component,
+
+we should add the turns prop
+
+and pass our gameTurns state snapshot
+
+as a value through that prop to that component.
+
+And with that, if you save everything again and you reload,
+
+if you click a button,
+
+you see a log message appear down there.
+
+And you see a new log message is added
+
+for every square that I select here.
+
+And that's how we can output this log data here
+
+and how we're now using a single piece of state,
+
+this gameTurns state,
+
+to update two different parts of the UI.
+
+Transcript
+Now, in the last lectures,
+
+we made sure that we compute this gameboard value
+
+based on this gameTurns state
+
+that's managed in the app component
+
+and that's passed through props to the Gameboard component.
+
+Before we continue adding more features,
+
+let's take another look at this app component.
+
+Is there something else we could compute here?
+
+Maybe something we're currently managing as state?
+
+Well, since I'm asking that way, yes there is.
+
+It's this activePlayer state.
+
+At the moment, we are managing this as state.
+
+And if you just glance at this code,
+
+this also makes a lot of sense,
+
+right after all,
+
+the player needs to change after every turn.
+
+And we need to update the UI when that happens
+
+because, for example, this highlighting box needs to change
+
+and the symbol that gets placed in these boxes
+
+also needs to change.
+
+So a UI update is needed,
+
+hence managing this as state makes sense, right?
+
+No.
+
+Because yes, we need state to trigger a UI update,
+
+but let's not forget
+
+that we already have this gameTurns state here
+
+which already changes whenever a box is selected,
+
+so whenever a button is clicked.
+
+So we definitely don't need this activePlayer state
+
+just to trigger a UI update when that happens.
+
+But, of course, we need information
+
+regarding which player is the active player,
+
+but we can also get this information from our gameTurns.
+
+And indeed, that's exactly what we're already doing
+
+here in this function.
+
+We're passing to set gameTurns.
+
+Here, we are deriving the activePlayer
+
+for this turn state update based on the previous turn.
+
+And, of course, we could do the same here
+
+in the app component.
+
+Instead of having a dedicated activePlayer state,
+
+which is updated here, we could add some derived state here,
+
+and we can essentially copy the logic from here,
+
+with the difference being that now here,
+
+in the app component,
+
+we're not getting the current player information
+
+based on some old gameTurns state,
+
+but instead we want to use the current gameTurns state.
+
+So here we replace prevTurns with gameTurns.
+
+But with that, we're then arriving the symbol
+
+of the currently active player from gameTurns.
+
+Now even though the code is pretty much the same as here,
+
+this does not allow us to get rid of this code here
+
+because here inside of this function
+
+which we pass to setGameTurns,
+
+we need to derive the state from the old gameTurns state,
+
+whereas here in the app component,
+
+we're deriving it from the current gameTurns state.
+
+For the reasons I mentioned before,
+
+where when you update state based on old state,
+
+you should update it like this.
+
+But, of course, what we can do is
+
+we can create a helper function
+
+outside of the component function
+
+because this helper function will not need any access
+
+to the state or any other data related to the component.
+
+And it also shouldn't be recreated
+
+when the component function re-executes.
+
+We could name it deriveActivePlayer,
+
+and as an input, I want to get my gameTurns
+
+as a simple standard parameter.
+
+And then we can copy this code,
+
+paste it here into deriveActivePlayer
+
+and return currentPlayer here.
+
+And with this helper function defined here,
+
+we can go back to our component function
+
+and now replace this code here
+
+with a constant named currentPlayer
+
+or activePlayer, whatever you want to name it,
+
+which holds the result of calling deriveActivePlayer.
+
+So this function which we just added,
+
+and we just pass our state gameTurns
+
+as an argument like this to deriveActivePlayer,
+
+so that in there, it is available.
+
+That's how this is all related and works together.
+
+And with that, we got the activePlayer here.
+
+And, of course, now in this state updating function,
+
+we can also replace this code
+
+and set our currentPlayer by calling deriveActivePlayer.
+
+But now we don't pass gameTurns
+
+as an argument to this function, but prevTurns in here.
+
+And with that, we also got rid of that code duplication.
+
+And now with that, we still got the activePlayer,
+
+but we got it without managing some extra state.
+
+And that's really what you should go for
+
+when writing React code.
+
+You wanna manage as little state as possible,
+
+and derive and compute as many values as needed.
+
+With that, if we save that and reload,
+
+you see we got no error,
+
+and I can still click these buttons and play this game.
+
+And with that, it's now time to make sure
+
+that we can't click the same button multiple times
+
+as we currently can.
+
+And, of course, then we also want to check
+
+whether the game is over.
+

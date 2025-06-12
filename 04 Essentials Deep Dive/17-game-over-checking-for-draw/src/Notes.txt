@@ -1,0 +1,580 @@
+Transcript
+And we can get hold of the symbol
+
+that's stored in the first square
+
+of this specific winning combination.
+
+We're taking a look here by accessing game board
+
+which is this multidimensional array here.
+
+Keep that in mind.
+
+And then we first use combination
+
+zero dot row.
+
+Now combination is one of these elements
+
+and it's now this first element
+
+in this winning combination we're taking a look at.
+
+So it's this element.
+
+This is the first element in this winning combination.
+
+Or this would be the element
+
+in the next winning combination,
+
+in the next iteration of this for loop,
+
+where we go through all winning combinations.
+
+And we're now extracting the row
+
+to access a row in our game board.
+
+And then once we access the row,
+
+we want to access a column in the game board
+
+to access one specific square there
+
+with help of combination zero column.
+
+And it's now the same logic for the second and third square.
+
+The difference is just
+
+that it's now combination one row and combination one column
+
+and combination two row and combination two column.
+
+So that step by step, we go through the different squares
+
+that make up one winning combination.
+
+And we take a look at the symbols that are stored
+
+in our game board in these different squares.
+
+So now with that, we simply extracted the different squares
+
+for the different winning combinations.
+
+And of course now we wanna check if they're all equal.
+
+Because we know that the game is over
+
+if for a possible winning combination,
+
+all symbols are equal.
+
+Like we for example, have it here.
+
+This would be one possible winning combination
+
+and all symbols are equal.
+
+So now to check if they're equal, we can start
+
+by adding a IF check
+
+and start by checking if first square symbol is truthy.
+
+So I don't even wanna start by comparing this to anything.
+
+I just wanna check if it's not null, basically
+
+because null in JavaScript is treated as a falsey value.
+
+And of course if the value in my game board
+
+at a specific position is still null,
+
+I don't need to continue checking
+
+if it's equal to the other squares
+
+in that winning combination because that square has then
+
+not been selected by a player yet.
+
+But if it is truthy, I want to add another condition here.
+
+And I wanna check if the first square symbol is equal
+
+to the second square symbol
+
+because the first square has been selected
+
+and some symbol has been found in there.
+
+Now I want to check if it's the same symbol
+
+as in the second square of this winning combination.
+
+And if that's the case, there's a last check I wanna perform
+
+and I wanna check if this first square symbol is also equal
+
+to the third square symbol.
+
+Because if all three conditions here are met
+
+I know that all three squares
+
+of this winning combination contain the same symbol.
+
+And in that case, we have a winner.
+
+So in that case, I know that the symbol
+
+that can be found in these squares
+
+is the symbol of the winning player.
+
+Therefore, here we can add a winner variable
+
+which initially is undefined or null
+
+whatever you want because we have no winner yet.
+
+But if we make it into this IF check,
+
+I'll set winner equal to first square symbol,
+
+so to the symbol of the player who won.
+
+And now we can use this winner variable
+
+to conditionally show some game over message
+
+if it is defined, so if it is not undefined.
+
+Therefore down here, maybe above the game board,
+
+we can use this shortcut
+
+with this double ampersand operator
+
+to check if winner is truthy, if it's an X or an O.
+
+And in that case
+
+we could output a paragraph where we say "You won"
+
+and then we output the symbol of the winner
+
+and maybe an exclamation mark thereafter.
+
+Now, that's not the final UI I want to have
+
+but it's a start.
+
+And with that, if we save this and I reload,
+
+I see no message here.
+
+But if we now make sure that we do win, for example
+
+by completing this diagonal combination
+
+I indeed get "You won X" because indeed it is the player
+
+with the symbol X that won here.
+
+Now if I reload again and I make sure
+
+that the player with the O wins this time, I get
+
+"You won O".
+
+Now I can still continue playing the game thereafter
+
+which is definitely not the behavior I want
+
+but you can see that we are able to identify a winner.
+
+And therefore, now as a next step,
+
+I wanna make sure that we show a nicer game over screen.
+
+Transcript
+So we're almost done, but it would be nice
+
+if this rematch button would restart the game
+
+and that's thankfully pretty easy to achieve.
+
+Now, we got the button in there
+
+but what does it mean to restart the game?
+
+Well, in the end,
+
+our game is controlled by this gameTurns state.
+
+That's our single source of truth for this entire game.
+
+It's this gameTurns State
+
+which we use to derive the gameBoard.
+
+It's this state which we use to derive the activePlayer
+
+and it's this state which we use to check for a winner.
+
+So this is our single source of truth.
+
+And therefore, restarting the game simply means
+
+that we should reset gameTurns to an empty array
+
+that we should clear this log, so to say,
+
+and all the rest will automatically adjust
+
+since we're deriving all the other data from this state.
+
+So therefore, all we have to do
+
+in the App component is add a new function, handleRematch,
+
+for example, or handleRestart to be a bit clearer.
+
+And in there, I'll set gameTurns
+
+to an empty array like this.
+
+That's all.
+
+Now we just need to make sure
+
+that this function is triggered
+
+from inside the GameOver component.
+
+So from this button
+
+and therefore, in the GameOver component,
+
+we can accept a prop that could be named onRestart.
+
+And we wanna set this as a value for the onClick prop
+
+on this button so that again, we pass a function
+
+from outside this component to this button
+
+as we did it many times before in this project.
+
+And now in the App component, we wanna use handleRestart
+
+as a value for the onRestart prop we just used
+
+and added in the GameOver component like this.
+
+And that should be all.
+
+That's all you have to do because we're deriving everything
+
+from this state.
+
+So with that, if I reload and I win and I click rematch,
+
+it kind of looks as if it worked
+
+because that player selection changed,
+
+but the Game Over screen is still there
+
+and the game board did not adjust.
+
+And this is the case because we got a bug in this game.
+
+And indeed, it is a bug that can be hard to catch
+
+but it is a bug that's related
+
+to how we're updating our gameBoard.
+
+Now, we are deriving the gameBoards dynamically here based
+
+on our gameTurns.
+
+But take a look at this line.
+
+What are we doing in this line here?
+
+Well, we're overriding some inner element
+
+in a nested array in another array
+
+with the symbol of a player that took a certain turn.
+
+The problem is that the gameBoard
+
+where we're overriding this value
+
+or where we're setting this value is based
+
+on this initialGameBoard
+
+and that's an array full of arrays.
+
+Now, as I mentioned earlier in this section,
+
+arrays, like objects in JavaScript, are reference values
+
+and that means that they're stored in memory.
+
+And if we're then using them,
+
+even if they're stored in different variables,
+
+we're always editing that same object or array in memory.
+
+And therefore, when I set a certain row-column combination
+
+to the player symbol here,
+
+I'm doing that in that original array in memory.
+
+Therefore, after restarting the game,
+
+this array here is not reset,
+
+it's still this edited old array.
+
+So now we kind of decoupled the gameBoard
+
+from our gameTurns because of how we update this here.
+
+Now, the solution thankfully is simple.
+
+We just need to create a copy
+
+of the initialGameBoard here and it must be a deep copy.
+
+So not just the outer array
+
+but we also need to copy all the inner arrays.
+
+And we can do this
+
+in a way I already showed you before by calling map here
+
+and then going through all the inner arrays.
+
+And for every inner array, we create such a copy,
+
+which contains the existing array elements spread into it.
+
+With this, we make sure
+
+that we added a brand new array when we derive the gameBoard
+
+and not that original initial array in memory.
+
+And therefore, now with this,
+
+if we save this and reload here, if I now win like this,
+
+if I click rematch, now this works.
+
+Now we can restart and win again.
+
+And you see that the log also is cleared
+
+if we click rematch.
+
+We also got no error in the console.
+
+And with that, we can now finally restart the game.
+
+Transcript
+So at this point we are pretty much done
+
+with that game.
+
+There's just one thing that would be nice to have.
+
+If we win here, we're currently saying "X won" or "O won."
+
+And that's, of course, okay
+
+and we know what's meant by that, but it would be nicer
+
+if instead we would be showing
+
+the name of the player who won, so Player One or Player Two,
+
+or if we edit this name, the edited name, of course.
+
+Now this, of course, means that we need information
+
+about the player names in the app component,
+
+because that is where we are deriving the winner.
+
+And at the moment the player name information
+
+is stored inside of the player component.
+
+That's where we're editing and storing the player name.
+
+And we're not sharing this name
+
+with any other part of the application.
+
+So, hence, we need to make sure
+
+that we get those player names out of the player component,
+
+into the app component.
+
+Now you could think that you wanna lift the state up again.
+
+Maybe this player name state that you wanna lift it
+
+out of this player component into the app component.
+
+But that would be wrong.
+
+It would be wrong because this player name state here
+
+is actually used to update this input field
+
+on every keystroke.
+
+And if we would move it out of the player component
+
+that would mean that the entire app component
+
+is reevaluated on every keystroke,
+
+which also means that the entire game board
+
+is reevaluated on every keystroke.
+
+And that's really redundant and not what we want to do.
+
+In addition, lifting this player name state
+
+out of the player component also, of course, would be tricky
+
+because we're using this player component twice
+
+and every component should manage its own name.
+
+So, therefore, the player component
+
+should actually stay the way it is.
+
+Here, instead, I simply want to add a new state
+
+to my app component here, with useState,
+
+where I store the currently set player names.
+
+And this state here could be an array with the two names,
+
+like Player One and Player Two initially.
+
+But since these player names
+
+are tightly coupled to their symbols,
+
+I think it makes more sense to use an object here as a map,
+
+so to say, where we have the key X
+
+and the value for that key is Player One
+
+and the key O for the second player and that's Player Two.
+
+And then, of course, we can and should destructure
+
+this array we get back from useState.
+
+And here we got our players
+
+and a set players state updating function.
+
+Now set players should be called
+
+whenever we click this save button in the player component.
+
+Not on every keystroke,
+
+but only when we save a change to the player name.
+
+So, therefore, of course, in this app component function,
+
+we should add a new function maybe here,
+
+which could be named handlePlayerNameChange,
+
+because that's, in the end, what we wanna React to.
+
+And here I expect to get the symbol of the player
+
+for whom the name changed and the new name as arguments.
+
+And then we can call setPlayers.
+
+So this state updating function
+
+of this newly added state, which has this shape.
+
+And I wanna update my state based on my old state,
+
+because, of course, only one name of one player changes here
+
+and I don't wanna lose the name
+
+and information for the other player.
+
+Therefore, in the end here, I get my previous players
+
+and I'll return a new object,
+
+which will be my new player's state,
+
+where I'll spread my old player's object into,
+
+so that I start by again setting both the X and O property
+
+to the respective old player names.
+
+But I will then overwrite one of these two properties.
+
+The property which I get here,
+
+with help of that symbol parameter.
+
+We can do this by using this JavaScript syntax
+
+where we dynamically set a property
+
+with this square bracket syntax here,
+
+so that's standard JavaScript, not React specific.
+
+And we set this property, which is either X or Y,
+
+depending on what's stored in symbol, to the new name.
+
+So I use this approach to ensure that I keep the name
+
+and symbol of the player that's not changing
+
+and I'm then just overriding the name for the symbol
+
+of the player that was changed.
+
+So that's how we could update the player's data.

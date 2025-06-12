@@ -1,0 +1,25 @@
+/*
+The props concept is all about being able to pass data into components, and to then use that data in there.
+
+In React we actually call that a prop because that concept of configuring components is called props.
+
+You can really pass all kinds of values as values for your props.
+You can pass strings,numbers, objects or arrays,
+
+*/
+
+/*
+
+Now in normal JavaScript functions you would simply add one or more parameters to accept input values and to then use these input values.
+
+Now this props parameter will be set by React because it's React that will execute this function.
+
+And under the hood React will call the actual functions.
+
+Therefore, React will pass a value for this props parameter to this function when it calls it, and the value that will be passed for this parameter to this function by React will be an object, and it will be an object that has all these key value pairs.
+
+So all your custom attributes as keys and the values for these attributes as values grouped into it.
+
+So the key you set down there is the key you also have to access up there in the component when you want to use a prop value.
+
+*/

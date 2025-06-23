@@ -1,3 +1,16 @@
+/*
+
+Instead there is one prop which you will always get,the special, built-in children prop. This is a prop that's set by React and it's a prop that's not set with help of attributes.
+
+Instead, this children prop here simply refers to the content between your component text.
+So the children prop contains whichever content you have between your component text, and that can simply be some text as we have it here, but it could also be some complex JSX structure instead if needed.
+
+you can output that content with props.children, or again, by using object destructuring here and by pulling out the children property and storing it in its own variable you could say,
+
+And this way of building Components where your Components can wrap other Components or other content is called component composition.
+
+*/
+
 export default function TabButton({ children }) {
   return (
     <li>

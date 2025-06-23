@@ -1,10 +1,22 @@
 export default function TabButton({ children }) {
   function handleClick() {
-    console.log('Hello World!');
+    console.log("Hello World!");
   }
 
   return (
     <li>
+      /* And therefore, in React, you instead add event listeners to elements by
+      adding a special attribute, a special prop to those elements. And I'm
+      calling it a prop here as well, because in the end those built-in elements
+      are also just components. And the special prop you want to add here is the
+      onClick prop. And these built-in elements support many on-something props.
+      Now the value for this onClick prop here, or actually for any event prop,
+      is a function. So the value you should provide here should be a function
+      because you want to point at the function that should be executed when
+      that event here occurs. When the button is clicked, by React, under the
+      hood, and therefore we just use the function name here, we use the
+      function as a value, therefore, and we pass that function as a value to
+      onClick. */
       <button onClick={handleClick}>{children}</button>
     </li>
   );
